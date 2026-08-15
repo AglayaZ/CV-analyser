@@ -1,0 +1,52 @@
+from flask import Flask, render_template, request
+import google.generativeai as genai
+import fitz
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
+genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+model = genai.GenerativeModel('gemini-flash-latest')
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        file = request.files['cv']
+        
+        pdf = fitz.open(stream=file.read(), filetype='pdf')
+        text = ''
+        for page in pdf:
+            text += page.get_text()
+        
+        prompt = f"""You are a professional CV reviewer. Analyse this CV and provide feedback in exactly this format:
+
+Score: [number from 1-10]
+Summary: [2-3 sentence overall impression]
+Strengths:
+- [strength 1]
+- [strength 2]
+- [strength 3]
+Improvements:
+- [improvement 1]
+- [improvement 2]
+- [improvement 3]
+Missing:
+- [missing element 1]
+- [missing element 2]
+
+CV text:
+{text}"""
+                
+        response = model.generate_content(prompt)
+        feedback = response.text
+        
+        return render_template('results.html', feedback=feedback)
+    
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
