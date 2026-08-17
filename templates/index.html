@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Analyser</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>CV Analyser</h1>
+            <p class="subtitle">Upload your CV and get instant AI feedback</p>
+        </div>
+        <div class="upload-card">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="upload-area">
+                    <p class="upload-icon">📄</p>
+                    <p class="upload-text">Upload your CV</p>
+                    <p class="upload-hint">PDF files only, max 5MB</p>
+                    <input type="file" name="cv" accept=".pdf" required>
+                </div>
+                <button type="submit">Analyse CV</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
