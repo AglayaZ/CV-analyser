@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>CV Analysis</h1>
+            <a href="/" class="back-link">← Analyse another CV</a>
+        </div>
+        <div class="results-card">
+            <div class="feedback">
+                {{ feedback | safe }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
