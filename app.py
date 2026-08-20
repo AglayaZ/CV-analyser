@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import google.generativeai as genai
+from google import genai
 import fitz
 import os
 from dotenv import load_dotenv
@@ -8,8 +8,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-model = genai.GenerativeModel('gemini-flash-latest')
+client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -40,7 +39,7 @@ Missing:
 CV text:
 {text}"""
                 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(model='gemini-3.6-flash', contents=prompt)
         feedback = response.text
         
         return render_template('results.html', feedback=feedback)
