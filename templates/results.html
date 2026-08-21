@@ -12,31 +12,44 @@
             <h1>CV Analysis</h1>
             <a href="/" class="back-link">← Analyse another CV</a>
         </div>
+
+        <div class="score-card">
+            <span class="score-number">{{ sections.score }}</span>
+            <span class="score-out-of">/10</span>
+        </div>
+
         <div class="results-card">
-            {% set lines = feedback.split('\n') %}
-            {% for line in lines %}
-                {% if line.startswith('SCORE:') %}
-                    <div class="score-block">
-                        <span class="score-label">Score</span>
-                        <span class="score-value">{{ line.replace('SCORE:', '').strip() }}/10</span>
-                    </div>
-                {% elif line.startswith('SUMMARY:') %}
-                    <div class="section">
-                        <h3 class="section-title">Summary</h3>
-                        <p class="section-text">{{ line.replace('SUMMARY:', '').strip() }}</p>
-                    </div>
-                {% elif line in ['STRENGTHS:', 'IMPROVEMENTS:', 'MISSING:'] %}
-                    <div class="section">
-                        <h3 class="section-title">{{ line.replace(':', '').title() }}</h3>
-                        <ul class="section-list" id="{{ line.replace(':', '').lower() }}">
-                        </ul>
-                    </div>
-                {% elif line.startswith('- ') %}
-                    <script>
-                        document.querySelector('ul:last-of-type').innerHTML += '<li>{{ line[2:] }}</li>';
-                    </script>
-                {% endif %}
-            {% endfor %}
+            <div class="section">
+                <h3 class="section-title">Summary</h3>
+                <p class="section-text">{{ sections.summary }}</p>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Strengths</h3>
+                <ul class="section-list">
+                    {% for item in sections.strengths %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Improvements</h3>
+                <ul class="section-list">
+                    {% for item in sections.improvements %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Missing</h3>
+                <ul class="section-list">
+                    {% for item in sections.missing %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </body>
