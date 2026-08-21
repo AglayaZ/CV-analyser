@@ -41,6 +41,7 @@ CV text:
                 
         response = client.models.generate_content(model='gemini-3.6-flash', contents=prompt)
         feedback = response.text
+        print(feedback)
         
         sections = {
             'score': '',
@@ -53,17 +54,20 @@ CV text:
         current_section = None
         for line in feedback.split('\n'):
             line = line.strip()
-            if line.startswith('SCORE:'):
-                sections['score'] = line.replace('SCORE:', '').strip()
-            elif line.startswith('SUMMARY:'):
-                sections['summary'] = line.replace('SUMMARY:', '').strip()
-            elif line == 'STRENGTHS:':
+            # Remove markdown bold markers
+            line = line.replace('**', '')
+            
+            if 'SCORE:' in line or 'Score:' in line:
+                sections['score'] = line.replace('SCORE:', '').replace('Score:', '').strip()
+            elif 'SUMMARY:' in line or 'Summary:' in line:
+                sections['summary'] = line.replace('SUMMARY:', '').replace('Summary:', '').strip()
+            elif 'STRENGTHS:' in line or 'Strengths:' in line:
                 current_section = 'strengths'
-            elif line == 'IMPROVEMENTS:':
+            elif 'IMPROVEMENTS:' in line or 'Improvements:' in line:
                 current_section = 'improvements'
-            elif line == 'MISSING:':
+            elif 'MISSING:' in line or 'Missing:' in line:
                 current_section = 'missing'
-            elif line.startswith('- ') and current_section:
+            elif (line.startswith('- ') or line.startswith('– ') or line.startswith('— ')) and current_section:
                 sections[current_section].append(line[2:])
 
         return render_template('results.html', sections=sections)
