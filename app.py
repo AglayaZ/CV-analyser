@@ -42,7 +42,31 @@ CV text:
         response = client.models.generate_content(model='gemini-3.6-flash', contents=prompt)
         feedback = response.text
         
-        return render_template('results.html', feedback=feedback)
+        sections = {
+            'score': '',
+            'summary': '',
+            'strengths': [],
+            'improvements': [],
+            'missing': []
+        }
+
+        current_section = None
+        for line in feedback.split('\n'):
+            line = line.strip()
+            if line.startswith('SCORE:'):
+                sections['score'] = line.replace('SCORE:', '').strip()
+            elif line.startswith('SUMMARY:'):
+                sections['summary'] = line.replace('SUMMARY:', '').strip()
+            elif line == 'STRENGTHS:':
+                current_section = 'strengths'
+            elif line == 'IMPROVEMENTS:':
+                current_section = 'improvements'
+            elif line == 'MISSING:':
+                current_section = 'missing'
+            elif line.startswith('- ') and current_section:
+                sections[current_section].append(line[2:])
+
+        return render_template('results.html', sections=sections)
     
     return render_template('index.html')
 
