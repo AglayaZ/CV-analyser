@@ -22,7 +22,7 @@ def index():
         
         prompt = f"""You are a professional CV reviewer. Analyse this CV and provide feedback in exactly this format:
 
-Score: [number from 1-10]
+Score: [number from 1-10/10]
 Summary: [2-3 sentence overall impression]
 Strengths:
 - [strength 1]
