@@ -1,23 +1,41 @@
-# CV-analyser
+# CV Analyser
 
-
-A web app that analyses CVs using AI. Upload a PDF resume and get personalised feedback and suggestions to help improve your CV.
+Upload your CV as a PDF and get instant AI-powered feedback on how to improve it.
 
 **Live demo:** https://cv-analyser-wnre.onrender.com
 
 ## What it does
 
-- Upload a CV as a PDF
-- Extract text from the uploaded resume
-- Analyse the CV using AI
-- Get personalised feedback and improvement suggestions
-- Identify areas of the CV that could be improved
+Analyses your CV and returns:
+- An overall score out of 10
+- A summary of the CV's current state
+- Key strengths
+- Areas for improvement
+- Missing elements
 
 ## Tech used
 
-- Python — backend
-- Flask — web framework
-- Google Gemini AI — CV analysis and feedback
-- PyMuPDF — PDF processing and text extraction
+- Python, Flask — backend
+- Google Gemini API — AI analysis
+- PyMuPDF — PDF text extraction
 - HTML, CSS — frontend
-- Render — deployment
+- Deployed on Render
+
+## Run locally
+
+1. Clone the repo and install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+2. Create a `.env` file:
+   ```
+   GEMINI_API_KEY=your-key-here
+   ```
+
+3. Run the app:
+   ```
+   python3 app.py
+   ```
+
+4. Open `http://127.0.0.1:5000`
